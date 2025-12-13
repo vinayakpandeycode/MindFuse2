@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 30% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 25% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 25% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 185 85% 50%;
+    --primary-foreground: 220 30% 6%;
+
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 185 85% 50%;
+    --accent-foreground: 220 30% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 18%;
+    --input: 220 20% 15%;
+    --ring: 185 85% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --glow-primary: 185 85% 50%;
+    --glow-secondary: 200 90% 60%;
+    --gradient-start: 185 85% 50%;
+    --gradient-end: 200 90% 60%;
+    --glass: 220 25% 12%;
+    --glass-border: 220 20% 25%;
+    
+    /* Emotion colors */
+    --emotion-happy: 48 96% 53%;
+    --emotion-sad: 220 70% 55%;
+    --emotion-angry: 0 84% 60%;
+    --emotion-fear: 280 70% 55%;
+    --emotion-surprise: 30 100% 55%;
+    --emotion-neutral: 200 15% 50%;
+
+    --sidebar-background: 220 25% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 185 85% 50%;
+    --sidebar-primary-foreground: 220 30% 6%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 185 85% 50%;
+  }
+
+  .dark {
+    --background: 220 30% 6%;
+    --foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Sora', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-glass/50 backdrop-blur-xl border border-glass-border/30;
+  }
+
+  .glass-strong {
+    @apply bg-glass/80 backdrop-blur-2xl border border-glass-border/50;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-glow-secondary bg-clip-text text-transparent;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary to-glow-secondary;
+  }
+
+  .glow {
+    box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.3),
+                0 0 80px hsl(var(--glow-secondary) / 0.15);
+  }
+
+  .glow-sm {
+    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.25);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 30px hsl(var(--glow-primary) / 0.5);
+  }
+
+  .neural-grid {
+    background-image: 
+      radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.1) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  .emotion-happy { @apply text-emotion-happy; }
+  .emotion-sad { @apply text-emotion-sad; }
+  .emotion-angry { @apply text-emotion-angry; }
+  .emotion-fear { @apply text-emotion-fear; }
+  .emotion-surprise { @apply text-emotion-surprise; }
+  .emotion-neutral { @apply text-emotion-neutral; }
+
+  .bg-emotion-happy { background-color: hsl(var(--emotion-happy)); }
+  .bg-emotion-sad { background-color: hsl(var(--emotion-sad)); }
+  .bg-emotion-angry { background-color: hsl(var(--emotion-angry)); }
+  .bg-emotion-fear { background-color: hsl(var(--emotion-fear)); }
+  .bg-emotion-surprise { background-color: hsl(var(--emotion-surprise)); }
+  .bg-emotion-neutral { background-color: hsl(var(--emotion-neutral)); }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 
+           gradient-bg text-primary-foreground font-semibold rounded-lg
+           transition-all duration-300 hover:scale-105 glow-sm
+           hover:shadow-[0_0_30px_hsl(var(--glow-primary)/0.5)];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           glass text-foreground font-semibold rounded-lg
+           transition-all duration-300 hover:bg-glass-border/30;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-input border border-border rounded-lg
+           text-foreground placeholder:text-muted-foreground
+           focus:outline-none focus:ring-2 focus:ring-primary/50
+           transition-all duration-200;
+  }
+
+  .card-glass {
+    @apply glass rounded-2xl p-6 transition-all duration-300
+           hover:border-primary/30 hover:glow-sm;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold gradient-text text-glow;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.6);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
