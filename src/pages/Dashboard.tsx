@@ -6,6 +6,7 @@ import { useWebcam } from "@/hooks/useWebcam";
 import { useEmotionDetector } from "@/hooks/useEmotionDetector";
 import WebcamView from "@/components/dashboard/WebcamView";
 import CurrentEmotionDisplay from "@/components/dashboard/CurrentEmotionDisplay";
+import ChatPanel from "@/components/dashboard/ChatPanel";
 import EmotionChart from "@/components/dashboard/EmotionChart";
 import EmotionSummary from "@/components/dashboard/EmotionSummary";
 import ReportGenerator from "@/components/dashboard/ReportGenerator";
@@ -168,12 +169,23 @@ const Dashboard = () => {
 
             {/* Chart */}
             <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.15 }}
+>
+  <ChatPanel 
+  emotionHistory={emotionHistory}
+  currentEmotion={currentEmotion}/>
+</motion.div>
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
               <EmotionChart emotionHistory={emotionHistory} />
             </motion.div>
+            
           </div>
 
           {/* Right Column - Stats */}
