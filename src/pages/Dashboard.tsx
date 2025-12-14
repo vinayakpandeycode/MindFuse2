@@ -1,15 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Brain, LogOut, Play, Square, RefreshCw, User } from "lucide-react";
+
 import { useWebcam } from "@/hooks/useWebcam";
 import { useEmotionDetector } from "@/hooks/useEmotionDetector";
+
 import WebcamView from "@/components/dashboard/WebcamView";
 import CurrentEmotionDisplay from "@/components/dashboard/CurrentEmotionDisplay";
 import ChatPanel from "@/components/dashboard/ChatPanel";
 import EmotionChart from "@/components/dashboard/EmotionChart";
 import EmotionSummary from "@/components/dashboard/EmotionSummary";
 import ReportGenerator from "@/components/dashboard/ReportGenerator";
+import Chatbot from "@/components/Chatbot";
 
 const Dashboard = () => {
   const {
@@ -20,6 +23,7 @@ const Dashboard = () => {
     startCamera,
     stopCamera,
   } = useWebcam();
+
   const {
     isLoading: modelLoading,
     isModelLoaded,
@@ -34,12 +38,13 @@ const Dashboard = () => {
 
   const [emotionHistory, setEmotionHistory] = useState(getEmotionHistory());
 
-  // Update history periodically
+  // Update emotion history
   useEffect(() => {
     if (isDetecting) {
       const interval = setInterval(() => {
         setEmotionHistory(getEmotionHistory());
       }, 500);
+
       return () => clearInterval(interval);
     }
   }, [isDetecting, getEmotionHistory]);
@@ -81,7 +86,7 @@ const Dashboard = () => {
             </Link>
 
             <div className="flex items-center gap-4">
-              {/* Detection Controls */}
+              {/* Desktop Controls */}
               <div className="hidden md:flex items-center gap-2">
                 {!isDetecting ? (
                   <button
@@ -101,16 +106,16 @@ const Dashboard = () => {
                     Stop Detection
                   </button>
                 )}
+
                 <button
                   onClick={handleReset}
                   className="btn-secondary text-sm"
-                  title="Reset Session"
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* User Menu */}
+              {/* User */}
               <div className="flex items-center gap-2 pl-4 border-l border-border">
                 <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
                   <User className="w-4 h-4 text-primary-foreground" />
@@ -127,7 +132,7 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main */}
       <main className="container mx-auto px-4 py-6">
         {/* Mobile Controls */}
         <div className="md:hidden flex gap-2 mb-6">
@@ -155,12 +160,9 @@ const Dashboard = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left Column - Webcam */}
+          {/* Left */}
           <div className="lg:col-span-2 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <WebcamView
                 videoRef={videoRef}
                 isActive={isActive}
@@ -195,40 +197,23 @@ const Dashboard = () => {
             </motion.div>
           </div>
 
-          {/* Right Column - Stats */}
+          {/* Right */}
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <CurrentEmotionDisplay
-                currentEmotion={currentEmotion}
-                isDetecting={isDetecting}
-              />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <EmotionSummary emotionHistory={emotionHistory} />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <ReportGenerator
-                emotionHistory={emotionHistory}
-                isDisabled={emotionHistory.length === 0}
-              />
-            </motion.div>
+            <CurrentEmotionDisplay
+              currentEmotion={currentEmotion}
+              isDetecting={isDetecting}
+            />
+            <EmotionSummary emotionHistory={emotionHistory} />
+            <ReportGenerator
+              emotionHistory={emotionHistory}
+              isDisabled={emotionHistory.length === 0}
+            />
           </div>
         </div>
       </main>
+
+      {/* ✅ Floating Chatbot */}
+      <Chatbot />
     </div>
   );
 };
